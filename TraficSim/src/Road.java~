@@ -1,0 +1,171 @@
+import java.util.*;
+import java.awt.*;
+
+import javax.swing.*;
+
+public class Road{
+    private int length;
+    private int posX;
+    private int posY;
+	private int dirX;
+	private int dirY;
+	private int laneType;	//-1:leftTurn	0:straight	1:rightTurn
+    private Car[] cars;
+    private TraficLight tLight;
+    private ArrayList<Road> children;
+    
+    private int passedCars;
+    private int totalCarTime;
+    
+    private boolean steped = false;
+
+    public Road(int _length, int _posX, int _posY, int _dir, int _laneType, TraficLight _tLight){
+	length = _length;
+	posX = _posX;
+	posY = _posY;
+	laneType = _laneType;
+	splitDir(_dir);
+	tLight = _tLight;
+
+	cars = new Car[length];
+
+	children = new ArrayList<Road>();
+    }
+    
+    public int getLaneType()
+    {
+    	return laneType;
+    }
+	
+    public ArrayList<Road> getChildren()
+    {
+    	return children;
+    }
+    
+	public void addChild(Road r)
+	{
+		children.add(r);
+	}
+	
+	public void splitDir(int dir)
+	{
+		dirX = 0;
+		dirY = 0;
+		if(dir == 0)
+			dirX = -1;
+		else if(dir == 1)
+			dirY = -1;
+		else if(dir == 2)
+			dirX = 1;
+		else if(dir == 3)
+			dirY = 1;
+	}
+
+    public void step(){
+    if(steped)
+    	return;
+	for(Road r:children)
+	    r.step();
+
+	if(tLight != null)
+	    tLight.stepCount();
+	for(int i = 0; i < length; i++)
+		if(cars[i] != null)
+			cars[i].step();
+
+	if(cars[length-1] != null){
+	    if(tLight == null || tLight.isGreen()){
+		if(children.size() > 0){
+			ArrayList<Road> available = new ArrayList<Road>();
+			int dest = cars[length-1].getNext();
+			for(Road r:children)
+				if(r.laneType == dest)
+					available.add(r);
+			
+		    Road r = (Road)(available.get((int)(Math.random()*available.size())));
+
+		    if(r.addCar(cars[length-1]))
+		    {
+		    	totalCarTime += cars[length-1].getTime();
+		    	passedCars++;
+		    	cars[length-1] = null;
+		    }
+			else
+		    	cars[length-1].addDest(dest);
+		}
+		else
+		{
+	    	totalCarTime += cars[length-1].getTime();
+	    	passedCars++;
+		    cars[length-1] = null;
+		}
+	    }
+	}
+
+	for(int i=length-2; i>=0; i--){
+	    if(cars[i+1] == null){
+		cars[i+1] = cars[i];
+		cars[i] = null;
+	    }
+	}
+	steped = true;
+    }
+
+    public boolean addCar(Car c){
+	if(cars[0] == null){
+	    cars[0] = c;
+	    return true;
+	}
+	return false;
+    }
+
+    public void onClick(int x, int y)
+    {
+    	Rectangle r = new Rectangle(posX, posY, 22, 22);
+    	if(r.contains(x,y))
+    	{
+    		JComponent[] comp = new JComponent[]
+    				{
+    					new JLabel("Number of cars passed:" + passedCars + "\n Average time to Location:" + ((passedCars != 0) ? totalCarTime/passedCars : 0))
+    				};
+    		JOptionPane.showMessageDialog(null, comp, "Statistics", JOptionPane.PLAIN_MESSAGE);
+    	}
+    	else
+    	{
+    		for(Road c:children)
+    			c.onClick(x, y);
+    	}
+    }
+    
+    public void paint(Graphics g){
+
+	for(Road r:children)
+	    r.paint(g);
+
+	int length = this.length*20;
+
+	if(tLight != null)
+	    tLight.paint(g, posX+(dirX*length), posY+(dirY*length), 20);
+	g.setColor(Color.PINK);
+
+	int ndirX = dirY*22;
+	if(dirY == -1)
+		ndirX *= -1;
+	
+	int ndirY = dirX*22;
+	if(dirX == -1)
+		ndirY *= -1;
+	g.drawLine(posX, posY, posX+(dirX*length), posY+(dirY*length));
+	g.drawLine(posX+ndirX, posY+ndirY, posX+(dirX*length)+ndirX, posY+(dirY*length)+ndirY);
+	
+	//Draw Bounding box
+	g.setColor(Color.CYAN);
+	g.drawRect(posX, posY, 22, 22);
+	
+	for(int i = 0; i < this.length; i++){
+	    if(cars[i] != null)
+		cars[i].paint(g, posX+(dirX*20*i)+1, posY+(dirY*20*i)+1, 20);
+	}
+	steped = false;
+    }
+}

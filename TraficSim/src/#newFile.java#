@@ -1,0 +1,21 @@
+try
+{
+  readFile(file);
+}
+catch(FileNotFoundException e)
+{
+  createFile(file);
+}
+catch(Exception e)
+{
+  System.exit(0);
+})
+{
+  System.exit(0);
+})
+{
+  System.exit(0);
+})
+{
+  System.exit(0);
+}
