@@ -6,29 +6,38 @@ public abstract class Creature implements Entity //Abstract superclass to all "l
 
   public Creature() //Super constructor. All sub classes should call this.
     {
+      name = getRandomFromFile("Names.creature", "John Doe"); //Set the creatures name to some random name found in the file "Names.creature". If it throws an exception, the name will be set to "John Doe"
+    }
+
+  protected String getRandomFromFile(String toRead, String defaultString)
+    {
       try //Since we are going to read from a file we should expect possible exceptions, so we try to read and catch possible exceptions.
       {
-	ArrayList<String> possibleNames = new ArrayList<String>(); //Create a list to hold all the names written in a file
+	ArrayList<String> possibleStrings = new ArrayList<String>(); //Create a list to hold all possible Strings
 
 	//This is just one way of reading from a file. Use google/java docs to get other ways of doing it.
-	FileInputStream fStream = new FileInputStream("CreatureNames.names"); //Initialize a stream from the file "CreatureNames.names"
+	FileInputStream fStream = new FileInputStream(toRead); //Initialize a stream from the file toRead
 	DataInputStream in = new DataInputStream(fStream); //Create a DataInputStream from the FileInputStream
 	BufferedReader br = new BufferedReader(new InputStreamReader(in)); //Lastly create a BufferedReader.
 	
 	String s; //Create a string to hold each line of the file
 	while((s = br.readLine()) != null) //Keep reading line after line until you come to the end of the file and s = null
-	  possibleNames.add(s); //Add the line to the list of possible names for the creature
+	  possibleStrings.add(s); //Add the line to the list of possibleStrings
 	in.close(); //Close the file stream
-	name = possibleNames.get((int)(Math.random()*possibleNames.size())); //Set the creatures name to one of the names in the list. The name is chosen randomly based on the number of possible names
+	return possibleStrings.get((int)(Math.random()*possibleStrings.size())); //Return a string chosen at random from the list of random strings
       }
       catch(IOException e) //Catch an IOException. should also catch FileNotFoundException.
       {
-	name = "John Doe"; //If an IOException is caught, set the name of the creature to the generic name "John Doe"
+	return defaultString; //If an IOException is caught, return the default string
       }
-      catch(Exception e) //If any other exception is caught, print a stack trace and close the program.
+      catch(Exception e) //If any other exception is caught, return null
       {
-	e.printStackTrace(); //Print stacktrace
-	System.exit(0); //Close the program
+	return null;
       }
+    }
+
+  public String examine()
+    {
+      return "Its' name is " + name;
     }
 }
