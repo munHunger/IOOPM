@@ -1,0 +1,52 @@
+import java.io.*;
+public class Prime
+{
+  public static void main(String args[])
+    {
+      new Prime();
+    }
+
+  public Prime()
+    {
+      int c = 3;
+      try
+      {
+//Read from file
+      }
+      catch(FileNotFoundException e)
+      {
+//Create a file
+      }
+      catch(Exception e)
+      {
+	System.out.println(e);
+	System.exit(0);
+      }
+      while(true)
+      {
+	if(isPrime(c))
+	{
+	  try
+	  {
+//Write to file
+	  }
+	  catch(Exception e)
+	  {
+	    System.out.println(c);
+	  }
+	}
+	c++;
+      }
+    }
+
+  public boolean isPrime(int n)
+    {
+      int sqrt = Math.sqrt(n);
+      for(int i = 2; i <= sqrt; i++)
+      {
+	if((n % i) == 0)
+	  return false;
+      }
+      return true;
+    }
+}
