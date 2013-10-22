@@ -1,10 +1,10 @@
-public interface FileStructure
+public interface FileStructure <ElementType>
 {
-	public void add(Object obj);
+	public void add(ElementType obj);
 	
-	public Object get(int i);
+	public ElementType get(int i);
 	
-	public boolean contains(Object obj);
+	public boolean contains(ElementType obj);
 	
 	public int size();
 }

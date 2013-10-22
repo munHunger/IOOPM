@@ -1,81 +1,89 @@
-
-public class Tree implements FileStructure
+import java.util.ArrayList;
+public class Tree <ElementType> implements FileStructure <ElementType>
 {
-	private int length;
-	private int index;
-	private Object obj;
-	private Tree[] branches;
-	public Tree()
+    private int length;
+    private int index;
+    private ElementType obj;
+    private ArrayList<Tree> branches = new ArrayList<Tree>();
+    private int branchNum = 2;
+    public Tree()
 	{
-		branches = new Tree[2];
+	    for(int i = 0; i < branchNum; i++)
+		branches.add(null);
 	}
 	
-	public Tree(int i, Object obj)
+    public Tree(int i, ElementType obj)
 	{
-		branches = new Tree[2];
-		this.obj = obj;
-		index = i;
+	    for(int n = 0; n < branchNum; n++)
+		branches.add(null);
+	    this.obj = obj;
+	    index = i;
 	}
 	
-	public void add(Object obj)
-	{
-		add(obj, length);
-	}
+    public void add(ElementType obj)
+    {
+	add(obj, length);
+    }
 	
-	private void add(Object obj, int index)
-	{
-		if(this.obj == null)
-			this.obj = obj;
-		else
-		{
-			int minNum = 9999999;
-			int shortTree = 0;
-			for(int i = 0; i < branches.length; i++)
-			{
-				if(branches[i] == null || branches[i].size() < minNum)
-				{
-					if(branches[i] == null)
-						minNum = 0;
-					else
-						minNum = branches[i].size();
-					shortTree = i;
-				}
-			}
+    private void add(ElementType obj, int index)
+    {
+	if(this.obj == null)
+	    this.obj = obj;
+	else
+	    {
+		int minNum = 9999999;
+		int shortTree = 0;
+		for(int i = 0; i < branches.size(); i++)
+		    {
+			if(branches.get(i) == null || branches.get(i).size() < minNum)
+			    {
+				if(branches.get(i) == null)
+				    minNum = 0;
+				else
+				    minNum = branches.get(i).size();
+				shortTree = i;
+			    }
+		    }
 			
-			if(branches[shortTree] == null)
-				branches[shortTree] = new Tree(index, obj);
-			else
-				branches[shortTree].add(obj, index);
-		}
-			
-		length++;
-	}
-	
-	public Object get(int i)
-	{
-		if(i == index)
-			return obj;
+		if(branches.get(shortTree) == null)
+		    {
+			branches.set(shortTree, new Tree<ElementType>(index, obj));
+		    }
 		else
-			for(int x = 0; x < branches.length; x++)
-				if(branches[x] != null && !branches[x].get(i).equals("NaN"))
-					return branches[x].get(i);
-		
-		return "NaN";
-	}
+		    branches.get(shortTree).add(obj, index);
+	    }
+			
+	length++;
+    }
+	
+    public ElementType get(int i)
+    {
+	if(i == index)
+	    return obj;
+	else
+	    {
+		for(int x = 0; x < branches.size(); x++)
+		    {
+			if(branches.get(x) != null && ((Tree<ElementType>)(branches.get(x))).get(i) != null)
+			    return ((Tree<ElementType>)(branches.get(x))).get(i);
+		    }
+	    }
+	return null;
+    }
 
-	public boolean contains(Object obj) 
-	{
-		if(this.obj.equals(obj))
-			return true;
-		for(int i = 0; i < branches.length; i++)
-			if(branches[i].contains(obj))
-				return true;
-		return false;
-	}
+    public boolean contains(ElementType obj) 
+    {
+	if(this.obj.equals(obj))
+	    return true;
+	for(int i = 0; i < branches.size(); i++)
+	    if(branches.get(i).contains(obj))
+		return true;
+	return false;
+    }
 
-	public int size() 
-	{
-		return length;
-	}
+    public int size() 
+    {
+	return length;
+    }
 
 }

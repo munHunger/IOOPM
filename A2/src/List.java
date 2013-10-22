@@ -1,5 +1,5 @@
 
-public class List implements FileStructure
+public class List <ElementType> implements FileStructure <ElementType>
 {
 	private Node first;
 	private int length;
@@ -8,7 +8,7 @@ public class List implements FileStructure
 		
 	}
 	
-	public void add(Object obj) 
+	public void add(ElementType obj) 
 	{
 		Node newNode = new Node(null, obj);
 		if(first == null)
@@ -28,7 +28,7 @@ public class List implements FileStructure
 			c.next = n;
 	}
 	
-	public Object get(int i) 
+	public ElementType get(int i) 
 	{
 		if(i > length)
 			return null;
@@ -41,7 +41,7 @@ public class List implements FileStructure
 		}
 	}
 
-	public boolean contains(Object obj) 
+	public boolean contains(ElementType obj) 
 	{
 		Node current = first;
 		while(current != null)
@@ -61,9 +61,9 @@ public class List implements FileStructure
 	private class Node
 	{
 		public Node next;
-		public Object obj;
+		public ElementType obj;
 		
-		public Node(Node next, Object obj)
+		public Node(Node next, ElementType obj)
 		{
 			this.next = next;
 			this.obj = obj;

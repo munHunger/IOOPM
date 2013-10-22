@@ -28,9 +28,9 @@ public class GUI implements ActionListener{
 	private JTextField addField = new JTextField();
 	private JButton addButton = new JButton("Add");
 	
-	private List list = new List();
-	private Tree tree = new Tree();
-	private FileStructure fileStructure = list;
+	private List<String> list = new List<String>();
+	private Tree<String> tree = new Tree<String>();
+	private FileStructure<String> fileStructure = list;
 	
 	public GUI()
 	{
