@@ -14,8 +14,16 @@ public class Prime
 
   public void init(String fileName)
     {
-      fileWriter = new FileWriter(fileName);
-      bufferedWriter = new BufferedWriter(fileWriter);
+      try
+      {
+	fileWriter = new FileWriter(fileName);
+	bufferedWriter = new BufferedWriter(fileWriter);
+      }
+      catch(Exception e)
+      {
+	e.printStackTrace();
+	System.exit(0);
+      }
     }
 
   public Prime(String fileName)
@@ -44,7 +52,7 @@ public class Prime
 	System.out.println(e);
 	System.exit(0);
       }
-      while(true)
+      while(c < 1000)
       {
 	if(isPrime(c))
 	{
@@ -52,31 +60,30 @@ public class Prime
 	}
 	c++;
       }
+      try
+      {
+	if(bufferedWriter != null)
+	  bufferedWriter.close();
+      }
+      catch(Exception e)
+      {
+	System.out.println(e);
+	System.exit(0);
+      }
     }
 
   public void writeString(String s, String fileName)
     {
       try
       {
+	if(bufferedWriter == null)
+	  init(fileName);
 	//Write to file
 	bufferedWriter.write(s);
       }
       catch(IOException e)
       {
 	System.out.println(s);
-      }
-      catch(NullPointerException e)
-      {
-	if(s != null && fileName != null)
-	{
-	  init(fileName);
-	  writeString(s, fileName);
-	}
-	else
-	{
-	  System.out.println(e);
-	  System.exit(0);
-	}
       }
       catch(Exception e)
       {
