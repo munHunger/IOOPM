@@ -19,7 +19,7 @@ public class LargestNum extends RecursiveTask<Double>
 		System.out.println("Largest value:" + largest + "\tCalculation time for non fork:" + (System.currentTimeMillis()-time));
 		
 		time = System.currentTimeMillis();
-		ForkJoinPool pool = new ForkJoinPool(6);
+		ForkJoinPool pool = new ForkJoinPool();
 		LargestNum largestNum = new LargestNum(0, rng.length, rng);
 		System.out.println("Largest value:" + pool.invoke(largestNum) + "\tCalculation time for fork:" + (System.currentTimeMillis()-time));
 	}
