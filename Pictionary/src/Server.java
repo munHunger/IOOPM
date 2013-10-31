@@ -42,7 +42,6 @@ public class Server
 	
 	public void writeToAll(Object o)
 	{
-		System.out.println("Writing");
 		if(o != null)
 			for(Client p: clients)
 				p.writeObject(o);
@@ -86,10 +85,6 @@ public class Server
 				try 
 				{
 					Object o = inStream.readObject();
-					if(o instanceof Player)
-						System.out.println("name:" + ((Player)o).getName());
-					else if(o instanceof Message)
-						System.out.println("msg:" + ((Message)o).getMessage());
 					server.writeToAll(o);
 				} 
 				catch (ClassNotFoundException e) 

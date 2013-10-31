@@ -11,7 +11,9 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JPanel;
 
-
+/**
+ * PaintArea controlls a canvas
+ */
 public class PaintArea extends JPanel implements MouseListener, MouseMotionListener
 {
 	/**
@@ -29,7 +31,13 @@ public class PaintArea extends JPanel implements MouseListener, MouseMotionListe
 	
 	ObjectOutputStream outStream;
 	ObjectInputStream inStream;
-	
+    /**
+     * Creates a new PaintArea
+     * @param tools The PaintTools that will later be used for painting
+     * @param outStream The ObjectOutputStream for the paintarea. Used for networking
+     * @param inStream The ObjectInputStream for the paintarea. Used for networking
+     * @see PaintArea
+     */	
 	public PaintArea(PaintTools tools, ObjectOutputStream outStream, ObjectInputStream inStream)
 	{
 		this.outStream = outStream;
@@ -41,6 +49,10 @@ public class PaintArea extends JPanel implements MouseListener, MouseMotionListe
 		this.addMouseMotionListener(this);
 	}
 	
+    /**
+     * Draws the canvas onto g.
+     * @param g A Graphics object that will be painted upon
+     */
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
@@ -65,12 +77,18 @@ public class PaintArea extends JPanel implements MouseListener, MouseMotionListe
 		}
 		this.repaint();
 	}
-	
+    /**
+     * Returns the canvas.
+     * @return The canvas
+     */
 	public BitCanvas getCanvas()
 	{
 		return canvas;
 	}
-	
+    /**
+     * Sets if the player is allowed to paint or not
+     * @param turn true if the player is allowed to paint, else false
+     */
 	public void setPaintTurn(boolean turn)
 	{
 		this.paintTurn = turn;
@@ -93,7 +111,9 @@ public class PaintArea extends JPanel implements MouseListener, MouseMotionListe
 		// TODO Auto-generated method stub
 		
 	}
-
+    /**
+     * 
+     */
 	public void mousePressed(MouseEvent e) 
 	{
 		if(paintTurn)
@@ -122,6 +142,9 @@ public class PaintArea extends JPanel implements MouseListener, MouseMotionListe
 	{
 	}
 	
+    /**
+     * Writes the canvas to the outputStream
+     */
 	private void writeCanvas()
 	{
 		try 
@@ -134,6 +157,10 @@ public class PaintArea extends JPanel implements MouseListener, MouseMotionListe
 		}
 	}
 
+    /**
+     * OverWrites the canvas
+     * @param o sets the current canvas to o
+     */
 	public void overWrite(BitCanvas o) 
 	{
 		this.canvas = o;
