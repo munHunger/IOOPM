@@ -1,3 +1,4 @@
+//kommenterar för att testa git
 #include<stdio.h>
 
 typedef struct node{
