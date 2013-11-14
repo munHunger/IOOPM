@@ -1,4 +1,4 @@
-//kommenterar för att testa git
+//kommenterar för att testa git :)
 #include<stdio.h>
 
 typedef struct node{
@@ -61,11 +61,11 @@ int main(int argc, char *argv[]){
   addToList(&list, (void *)&barr);
 
   //plockar ut det första elementet
-  INT *firstElement = (INT *)list.first->value;
+  INT *firstElement = list.first->value;
   // ... och skriver ut det
   printf("%d\n", firstElement->baz);
   
-  CHAR *nextElement = (CHAR *)list.last->value;
+  CHAR *nextElement = list.last->value;
   printf("%c\n", nextElement->baz);
 
   return 0;
